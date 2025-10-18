@@ -1,0 +1,11 @@
+Version 4
+SymbolType BLOCK
+RECTANGLE Normal 64 32 -48 -16
+TEXT -26 21 Left 0 Digital Filter
+WINDOW 0 8 -24 Bottom 2
+PIN -48 0 LEFT 8
+PINATTR PinName IN
+PINATTR SpiceOrder 1
+PIN 64 0 RIGHT 8
+PINATTR PinName OUT
+PINATTR SpiceOrder 2

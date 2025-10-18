@@ -1,0 +1,25 @@
+Version 4
+SymbolType BLOCK
+RECTANGLE Normal -64 -72 80 72
+WINDOW 0 8 -72 Bottom 2
+PIN -64 -48 LEFT 8
+PINATTR PinName d
+PINATTR SpiceOrder 1
+PIN -64 -16 LEFT 8
+PINATTR PinName q
+PINATTR SpiceOrder 2
+PIN -64 16 LEFT 8
+PINATTR PinName theta
+PINATTR SpiceOrder 3
+PIN -64 48 LEFT 8
+PINATTR PinName zero
+PINATTR SpiceOrder 4
+PIN 80 -32 RIGHT 8
+PINATTR PinName Ia
+PINATTR SpiceOrder 5
+PIN 80 0 RIGHT 8
+PINATTR PinName Ib
+PINATTR SpiceOrder 6
+PIN 80 32 RIGHT 8
+PINATTR PinName Ic
+PINATTR SpiceOrder 7

@@ -1,0 +1,42 @@
+Version 4
+SymbolType BLOCK
+LINE Normal 96 -64 -64 -64
+LINE Normal 96 64 96 -64
+LINE Normal -64 64 96 64
+LINE Normal -64 -64 -64 64
+LINE Normal -16 -16 -64 -16
+LINE Normal 16 -28 -16 -16
+LINE Normal 96 -16 16 -16
+LINE Normal 48 32 16 32
+LINE Normal 32 16 48 32
+LINE Normal 16 32 32 16
+LINE Normal 48 16 16 16
+LINE Normal 32 -16 32 16
+LINE Normal 32 32 32 64
+TEXT 4 -54 Left 0 (kHz)
+TEXT 55 -55 Left 0 (µs)
+WINDOW 0 8 -88 Bottom 2
+PIN -64 16 LEFT 8
+PINATTR PinName Vc
+PINATTR SpiceOrder 1
+PIN -64 -16 LEFT 8
+PINATTR PinName A
+PINATTR SpiceOrder 2
+PIN 96 -16 RIGHT 8
+PINATTR PinName C
+PINATTR SpiceOrder 3
+PIN 32 64 BOTTOM 8
+PINATTR PinName P
+PINATTR SpiceOrder 4
+PIN 64 -64 TOP 8
+PINATTR PinName ton
+PINATTR SpiceOrder 5
+PIN 16 -64 TOP 8
+PINATTR PinName Fsw
+PINATTR SpiceOrder 6
+PIN -32 -64 TOP 8
+PINATTR PinName D
+PINATTR SpiceOrder 7
+PIN -64 48 LEFT 8
+PINATTR PinName Ip
+PINATTR SpiceOrder 8

@@ -1,0 +1,20 @@
+Version 4
+SymbolType BLOCK
+LINE Normal -80 80 -80 -64
+LINE Normal 80 0 -80 80
+LINE Normal -80 -64 80 0
+LINE Normal 16 64 16 32
+TEXT -9 20 Left 1 GND
+WINDOW 0 0 -56 Bottom 2
+PIN -80 -32 LEFT 8
+PINATTR PinName +
+PINATTR SpiceOrder 1
+PIN -80 48 LEFT 8
+PINATTR PinName -
+PINATTR SpiceOrder 2
+PIN 16 64 NONE 8
+PINATTR PinName Masse
+PINATTR SpiceOrder 3
+PIN 80 0 RIGHT 8
+PINATTR PinName OUT
+PINATTR SpiceOrder 4

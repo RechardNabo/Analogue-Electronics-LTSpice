@@ -1,0 +1,226 @@
+*****************************************************************
+****STMicroelectronics MOSFET, IGBT and Bipolar Library *********
+*****************************************************************
+*                                                               *
+* Models provided by STMicroelectronics are not guaranteed to   *
+* fully represent all the specifications and operating          *
+* characteristics of the product behavior that they reproduce.  *
+* The model describes the characteristics of a typical device.  *
+* In all cases, the current product data sheet contains all     *
+* information to be used like final design guidelines and the   *
+* only actual performance specification.                        *
+* Altough models can be a useful tool in evaluating device      *
+* performance, they cannot model exact device performance under *
+* all conditions.                                               *
+* STMicroelectronics therefore does not assume any              *
+* responsibility arising from their use.                        *
+* STMicroelectronics reserves the right to change models        *
+* without prior notice.                                         *
+*                                                               *
+* Rev 1.2.4 - Marzo 2020                                        *
+*****************************************************************
+
+*****************************************************************
+
+.subckt SCT016H120G3AG_V2K_L drain gate source kelvin  
+
+E1    Tj     val_T      VALUE={TEMPSiC}
+R1   val_T   0      1m
+.PARAM  dR=0 dVth=0 dVsd=0 dCi=0 dCr=0 dCo=0
+
+Rkelvin kelvin s2 5m
+Ckelvin kelvin s2 1p
+VLd    drain   d3x  0
+*RLd   drain   d3x    1
+VR_dr  d3  d2   0
+Rdrain-fissa d3x d3 3m
+VLg gate    g2     0
+*RLg gate    g2      1
+VLs source  s2      0
+*RLs source  s2      1
+
+Rg   g2 g1  1.35
+
+*****************************************************************
+.param AX=3.7m BX=400m DX=1.1 Ct0=73 EX=0.5 R_gain=10k fx=1  
+*****************************************************************
+
+V2xx 22  d1  0
+Grdrain 22 d2 value ={(r_gain*v(d1,d2))/((Fx*(AX*V(Tj)*V(Tj)+BX*V(Tj)+CX))+DX*(I(V2xx)**EX))}
+rdrainb 22 d2 500k
+
+.PARAM  CX={(Ct0+(Ctmax-Ct0)*limit(dR,0,1)-(Ctmin-Ct0)*limit(dR,-1,0))}
+.PARAM Ctmin=-75 Ctmax=13.3
+
+
+*****************************Gmos********************************
+
+.param ksat=4.7
+
+GMOS1 d1 s2 VALUE={ksat*IMOS(V(A2),V(d1,s2),V(Tj))}
+
+RGMOS1 d1 s2 500k
+
+.FUNC GGX(V,W) {1*(V-100m*ASINH(W/1)-100m*W)}
+
+.FUNC GGY(V)   {1.9u*V**(7.487*1)}
+
+.FUNC IMOS(V,W,T) {(V*(1+(1.5*(1+alpha*(T-T0))+V/25))*W/(ABS(W)+(4*(1+beta*(T-T0))+V/50*(1+gamma*(T-T0)))))}
+
+Esoglia1 A1  0 VALUE={GGX(MIN(MAX(V(gx,source),0),30),MIN(MAX(V(A2),0),200))}
+Esoglia2 A2 0 VALUE={GGY(MIN(MAX(V(A1),0),40))}
+
+.PARAM T0=25 alpha=1m beta=-2.86m gamma=-4.3m
+
+************************** Soglia *****************************
+.param Vth0=0.05  Vthx=-8m
+Evth g1 gx VALUE={(Vthx*(V(Tj)-T0))+Vth0+(Dsoglia)}
+
+.PARAM  Dsoglia={((Vtmax)*limit(dVth,0,1)+(Vtmin)*limit(dVth,-1,0))}
+.PARAM Vtmin=0.3 Vtmax=1.33
+
+**************************** Ci ********************************
+CGS  g1 source  {3625p}
+rcgs g1 source 10MEG
+.PARAM  Ci={Ci0+(Cimax-Ci0)*limit(dCi,0,1)-(Cimin-Ci0)*limit(dCi,-1,0)}
+.PARAM Cimin=0.7 Cimax=1.3
+.PARAM Ci0=1
+
+**************************** CMiller ***************************
+.PARAM  Cr={Cr0+(Crmax-Cr0)*limit(dCr,0,1)-(Crmin-Cr0)*limit(dCr,-1,0)}
+.PARAM Crmin=0.7 Crmax=1.3
+.PARAM Cr0=1
+Edev dev1 0 value {v(d1,g1)}
+c_dev1 dev1 dev2 1E-12
+R_dev dev2 dev3 1000
+V_miller dev3 0 0 
+G_miller d1 g1  value ={1*Cr*v(alfa)*i(V_miller)*1E12}
+Rcap alfa 0 1E03
+Ecap alfa 0 TABLE ={V(d1,g1)}
++(0.1,1433.18p) 
++(0.2,1405.27p) 
++(0.5,1341.96p) 
++(1,1262.8p) 
++(2,1134.83p) 
++(3,1023.5p) 
++(5,839.92p) 
++(7,663.04p) 
++(10,163.46p) 
++(15,130.81p) 
++(20,111.78p) 
++(25,98.87p) 
++(30,85.72p) 
++(40,52.16p) 
++(50,47.83p) 
++(100,38.54p) 
++(150,34.59p) 
++(200,32.03p) 
++(250,30.14p) 
++(300,28.71p) 
++(350,27.54p) 
++(400,26.5p) 
++(450,25.72p) 
++(500,25p) 
++(550,24.32p) 
++(600,23.69p) 
++(650,23.2p) 
++(700,22.72p) 
++(750,22.27p) 
++(800,21.97p) 
++(850,21.75p) 
++(900,21.5p) 
++(950,21.33p) 
++(1000,21.26p) 
+
+****************************** Co *******************************
+.PARAM  Co={Co0+(Comax-Co0)*limit(dCo,0,1)-(Comin-Co0)*limit(dCo,-1,0)}
+.PARAM Comin=0.8 Comax=1.2
+.PARAM Co0=1 
+Edevc dev1c 0 value {v(drain,source)}
+c_dev1c dev1c dev2c 1E-12
+R_devc dev2c dev3c 200
+V_millerc dev3c 0 0 
+G_coss drain source value ={Co*v(alfa2)*i(V_millerc)*1E12}
+Rcap2 alfa2 0 1E03
+Ecap2 alfa2 0 TABLE ={V(drain,source)}
++(0.1,6856.84p) 
++(0.2,6739.32p) 
++(0.5,6470.61p) 
++(1,6094.48p) 
++(2,5547.48p) 
++(3,5122.57p) 
++(5,4557.47p) 
++(7,4192.15p) 
++(10,3437.78p) 
++(15,2175.22p) 
++(20,1741.97p) 
++(25,1484.43p) 
++(30,1272.95p) 
++(40,806.77p) 
++(50,686.41p) 
++(100,444.85p) 
++(150,356.88p) 
++(200,305.04p) 
++(250,270.57p) 
++(300,245.62p) 
++(350,226.61p) 
++(400,210.28p) 
++(450,199.08p) 
++(500,188.57p) 
++(550,179.53p) 
++(600,171.55p) 
++(650,164.56p) 
++(700,158.68p) 
++(750,152.33p) 
++(800,147.61p) 
++(850,143.48p) 
++(900,140.66p) 
++(950,139.02p) 
++(1000,137.87p) 
+
+***************************** terzo ******************************
+
+Eee h1 0 value {stacco(limit(v(source,gate),0,5),V(Tj))}
+Ree h1 h 1
+CCC h 0 5u
+
+.PARAM  d_terzo={((Vsdmax)*limit(dVsd,0,1)+(Vsdmin)*limit(dVsd,-1,0))}
+.PARAM Vsdmin=0.016 Vsdmax=0.017
+
+.FUNC stacco(vgs,t) {(0.0146+0.012m*(t-25))*Vgs+(0.105-0.11m*(t-25))+(d_terzo+0.05m*(t-25)*0)}
+V_diodo d1zd d1z 0
+
+G_diode source d1zd VALUE={I_diode(V(source,d1zd),v(Tj),V(h))}
+R_x source d1zd 1E6
+
+.FUNC I_diode(z3,k3,k6) {(exp(min(-15+z3/(did(k3,k6)),7))-0)}
+.FUNC did(k4,k5) {k5-3E-05*(k4-25)}
+
+.FUNC ResDiodo(x,vgs) {(0.5m-0.018m*(x-25))*vgs+(17m+0.109m*(x-25))}
+
+Gvf d3x d1z VALUE={V(d3x,d1z)/ResDiodo(V(Tj),v(source,gate))}
+R_Y drain d1z 1
+
+************************** Recovery Diode **************************
+
+E_E001 ba 0 VALUE {-I(V_Diodo)}
+
+R_R002 aa ba 1k
+
+C aa 0 5p
+.PARAM Irrm=64E03
+R_edep drain d_dedep 30
+
+E_Eds d_dedep edep VALUE {-V(aa,0)*Irrm}
+
+Edeva dev1a 0 value {v(edep,source)}
+C_dev1a dev1a dev2a 0.3E-12
+R_deva dev2a dev3a 1E-06
+V_millera dev3a 0 0 
+G_millera edep source  value ={1*v(alfaa)*i(V_millera)*1E12}
+**********************************************************************
+Rcapa alfaa 0 1E03
+Ecapa alfaa 0 TABLE ={V(Tj)} (25,1p) (175,1.15p)  
+**********************************************************************
+
+.ENDS SCT016H120G3AG_V2K

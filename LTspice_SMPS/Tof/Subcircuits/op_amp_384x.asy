@@ -1,0 +1,22 @@
+Version 4
+SymbolType BLOCK
+LINE Normal 0 16 -80 -32
+LINE Normal -80 64 0 16
+LINE Normal -80 -32 -80 64
+LINE Normal -32 -3 -32 -16
+LINE Normal -32 35 -32 48
+TEXT -36 26 Left 0 G
+TEXT -42 4 Left 0 Vcc
+WINDOW 0 8 -40 Bottom 2
+PIN -80 -16 LEFT 8
+PINATTR PinName -
+PINATTR SpiceOrder 1
+PIN -32 -16 NONE 5
+PINATTR PinName REFOP
+PINATTR SpiceOrder 2
+PIN 0 16 NONE 8
+PINATTR PinName OUT
+PINATTR SpiceOrder 3
+PIN -32 48 NONE 8
+PINATTR PinName Masse
+PINATTR SpiceOrder 4

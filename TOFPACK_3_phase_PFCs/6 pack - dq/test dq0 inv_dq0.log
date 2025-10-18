@@ -1,0 +1,14 @@
+LTspice 24.0.12 for Windows
+Circuit: * D:\christophe\LTspice\TOF\3Phase\test dq0 inv_dq0.asc
+Start Time: Tue Oct 22 19:16:31 2024
+solver = Normal
+Maximum thread count: 8
+tnom = 27
+temp = 27
+method = Gear
+gmin = 1e-10
+abstol = 1e-06
+reltol = 0.01
+Direct Newton iteration for .op point succeeded.
+Total elapsed time: 0.602 seconds.
+
